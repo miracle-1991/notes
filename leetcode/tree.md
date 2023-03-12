@@ -30,3 +30,198 @@ public:
 本题中，一棵高度平衡二叉树定义为：
 一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1 。
 ### 解法
+```
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        high(root);
+        return m_is_balanced;
+    }
+    int high(TreeNode* root) {
+        if (root == nullptr) { return 0; }
+        int left = high(root->left);
+        int right = high(root->right);
+        if (left - right > 1 || right - left > 1) {
+            m_is_balanced = false;
+        }    
+        return max(left, right) + 1;
+    }
+    
+private:
+    bool m_is_balanced = true;
+};
+```
+
+## 543. 二叉树的直径
+给定一棵二叉树，你需要计算它的直径长度。一棵二叉树的直径长度是任意两个结点路径长度中的最大值。这条路径可能穿过也可能不穿过根结点。
+### 解法
+```
+class Solution {
+public:
+    int diameterOfBinaryTree(TreeNode* root) {
+        maxHigh(root);
+        return m_max_len;
+    }
+    int maxHigh(TreeNode* root) {
+        if (root == nullptr) { return 0; }
+        int left = maxHigh(root->left);
+        int right = maxHigh(root->right);
+        m_max_len = left + right > m_max_len ? left + right : m_max_len;
+        return max(left, right) + 1;
+    }
+private:
+    int m_max_len = 0;
+};
+```
+
+## 226. 翻转二叉树
+给你一棵二叉树的根节点 root ，翻转这棵二叉树，并返回其根节点。
+### 解法
+```
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if (root == nullptr) { return root; }
+        TreeNode* left = invertTree(root->left);
+        TreeNode* right = invertTree(root->right);
+        root->left = right;
+        root->right = left;
+        return root;
+    }
+};
+```
+
+## 617. 合并二叉树
+给你两棵二叉树： root1 和 root2 。
+想象一下，当你将其中一棵覆盖到另一棵之上时，两棵树上的一些节点将会重叠（而另一些不会）。你需要将这两棵树合并成一棵新二叉树。合并的规则是：如果两个节点重叠，那么将这两个节点的值相加作为合并后节点的新值；否则，不为 null 的节点将直接作为新二叉树的节点。
+返回合并后的二叉树。
+注意: 合并过程必须从两个树的根节点开始。
+### 解法
+```
+class Solution {
+public:
+    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+        if (root1 == nullptr) { return root2; }
+        if (root2 == nullptr) { return root1; }
+        TreeNode* left = mergeTrees(root1->left, root2->left);
+        TreeNode* right = mergeTrees(root1->right, root2->right);
+        TreeNode* head = root1;
+        head->val = root1->val + root2->val;
+        head->left = left;
+        head->right = right;
+        return head;
+    }
+};
+```
+
+## 112. 路径总和
+给你二叉树的根节点 root 和一个表示目标和的整数 targetSum 。判断该树中是否存在 根节点到叶子节点 的路径，这条路径上所有节点值相加等于目标和 targetSum 。如果存在，返回 true ；否则，返回 false 。
+叶子节点 是指没有子节点的节点。
+### 解法
+```
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        return hasPathSum(root, 0, targetSum);
+    }
+
+    bool hasPathSum(TreeNode* root, int sum, int target) {
+        if (root == nullptr) { return false; }
+        sum = sum + root->val;
+        if (isleaf(root)) {
+            return sum == target;
+        }
+        bool left = hasPathSum(root->left, sum, target);
+        bool right = hasPathSum(root->right, sum, target);
+        return left | right;
+    }
+
+    bool isleaf(TreeNode* root) {
+        if (root != nullptr && root->left == nullptr && root->right == nullptr) {
+            return true;
+        }
+        return false;
+    }
+};
+``` 
+
+## 437. 路径总和 III
+给定一个二叉树的根节点 root ，和一个整数 targetSum ，求该二叉树里节点值之和等于 targetSum 的 路径 的数目。
+路径 不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。
+### 解法
+双递归：
+* 外层递归：
+    * 设置基线条件： 当遇到空节点时，直接返回0
+    * 设置外层递归条件：递归求解左侧/右侧的值，加上以当前节点为根节点的内部递归的值，返回
+        * 内部递归：
+            * 设置基线条件：当遇到空节点时，返回0
+            * 设置递归条件： 判断当前的值是否等于target，Y则+1，继续内部递归左侧节点和右侧节点，递归时将target减去当前的值
+```
+class Solution {
+public:
+    int pathSum(TreeNode* root, int targetSum) {
+        if (root == nullptr) { return 0; }
+        int left = pathSum(root->left, targetSum);
+        int right = pathSum(root->right, targetSum);
+        return left + right + pathSumWithRoot(root, targetSum);
+    }
+    int pathSumWithRoot(TreeNode* root, size_t targetSum) {
+        if (root == nullptr) { return 0; }
+        size_t left = pathSumWithRoot(root->left, targetSum - root->val);
+        size_t right = pathSumWithRoot(root->right, targetSum - root->val);
+        int cnt = 0;
+        if (root->val == targetSum) { cnt += 1; }
+        return cnt + left + right;
+    }
+private:
+    int m_path_sum_cnt = 0;
+};
+```
+
+单递归：
+* 设置基线条件：当遇到空节点时，直接返回
+* 设置递归条件：
+    * 将当前节点加入栈(用数组表示)
+    * 从数组的尾部向头部顺序计算和，相当于从当前节点向根节点回溯，每当和等于目标值，计数+1
+    * 迭代左右节点
+    * 将当前节点出栈(栈要描述的是从根节点到当前节点的路径，如果不出栈，会导致左边的叶子节点也在该路径中)
+```
+class Solution {
+public:
+    int pathSum(TreeNode* root, int targetSum) {
+        vector<int> vl;
+        pathSum(root, vl, targetSum);
+        return m_path_sum_cnt;
+    }
+
+    void pathSum(TreeNode* root, vector<int>& vl, int targetSum) {
+        if (root == nullptr) { return; }
+        vl.push_back(root->val);
+        calcCnt(vl, targetSum);
+        if (root->left != nullptr) { 
+            pathSum(root->left, vl, targetSum);
+        }
+        if (root->right != nullptr) {
+            pathSum(root->right, vl, targetSum);
+        }
+        vl.pop_back();
+        return;
+    }
+
+    void calcCnt(vector<int>& vl, int targetSum) {
+        size_t sum = 0;
+        for (int i = vl.size() - 1; i >= 0; i--) {
+            sum += vl[i];
+            if (sum == targetSum) {
+                 m_path_sum_cnt++; 
+            }
+        }
+    }
+private:
+    int m_path_sum_cnt = 0;
+};
+```
+
+## 572. 另一棵树的子树
+给你两棵二叉树 root 和 subRoot 。检验 root 中是否包含和 subRoot 具有相同结构和节点值的子树。如果存在，返回 true ；否则，返回 false 。
+二叉树 tree 的一棵子树包括 tree 的某个节点和这个节点的所有后代节点。tree 也可以看做它自身的一棵子树。
