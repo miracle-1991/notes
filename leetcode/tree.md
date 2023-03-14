@@ -225,3 +225,81 @@ private:
 ## 572. 另一棵树的子树
 给你两棵二叉树 root 和 subRoot 。检验 root 中是否包含和 subRoot 具有相同结构和节点值的子树。如果存在，返回 true ；否则，返回 false 。
 二叉树 tree 的一棵子树包括 tree 的某个节点和这个节点的所有后代节点。tree 也可以看做它自身的一棵子树。
+### 解法
+两层递归：
+* 外层递归
+    * 设置基线条件：如果root为空，返回false
+    * 设置递归条件：如果当前节点是子树，返回true，否则，递归做节点/右节点，取并集
+        * 内层递归：
+            * 设置基线条件，如果root为空并且subroot也空，返回true，否则如果二者任一节点为空而另一个不为空返回false
+            * 设置递归条件：当前节点必须与subroot的节点相同，递归左右节点，左右节点也必须与subroot的左右节点完全相同，这种情况才返回true，否则返回false
+```
+class Solution {
+public:
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        if (root == nullptr) { return false; }
+        if (isSubtreeWithRoot(root, subRoot)) { return true; }
+        return isSubtree(root->left, subRoot) || isSubtree(root->right, subRoot);
+    }
+
+    bool isSubtreeWithRoot(TreeNode* root, TreeNode* subRoot) {
+        if (root == nullptr && subRoot == nullptr) { return true; }
+        if (root == nullptr || subRoot == nullptr) { return false; }
+        if (root->val != subRoot->val) { return false; }
+        bool left = isSubtreeWithRoot(root->left, subRoot->left);
+        bool right= isSubtreeWithRoot(root->right, subRoot->right);
+        return left && right; 
+    }
+};
+```
+
+## 101. 对称二叉树
+给你一个二叉树的根节点 root ， 检查它是否轴对称。
+### 解法
+单层递归
+* 设置基线条件：如果左侧节点与右侧节点都为空，返回true，如果二者中任一节点为空，而另外一个不为空，返回false
+* 设置递归条件：如果两个节点值不相同，返回false，否则，取左边节点的右侧节点/左侧节点，取右侧节点的左侧节点/右侧节点，递归判断二者是否相同
+```
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if (root == nullptr) { return true; }
+        return isSymmetric(root->left, root->right);
+    }
+
+    bool isSymmetric(TreeNode* left, TreeNode* right) {
+        if (left == nullptr && right == nullptr) { return true; }
+        if (left == nullptr || right == nullptr) { return false; }
+        if (left->val != right->val) { return false; }
+        bool f1 = isSymmetric(left->left, right->right);
+        bool f2 = isSymmetric(left->right, right->left);
+        return f1 && f2;
+    }
+};
+```
+
+## 111. 二叉树的最小深度
+给定一个二叉树，找出其最小深度。
+最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+说明：叶子节点是指没有子节点的节点。
+### 解法
+单层递归：
+* 设置基线条件：如果当前节点是空节点，返回0
+* 设置递归条件：left为左侧递归的最小高度，right为右侧递归的最小高度：
+    * 如果left并且right都为0，说明是叶子节点，返回高度1
+    * 如果left或者right其中一个是0，由于空节点不能参与运算，能参与运算的最多截止到叶子节点，返回有值的那个+1
+    * 如果left和right都不是0，返回1+min(left, right)
+```
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        if (root == nullptr) { return 0; }
+        int left = minDepth(root->left);
+        int right = minDepth(root->right);
+        if (left == 0 && right == 0) { return 1; }
+        if (left == 0 && right != 0) { return 1 + right; }
+        if (left != 0 && right == 0) { return 1 + left; }
+        return 1 + min(left, right);
+    }
+};
+```
