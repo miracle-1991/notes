@@ -2,3 +2,6 @@
 ## 算法
 * [链表](./leetcode/list.md)
 * [树](./leetcode/tree.md)
+
+## C++
+* [RAII](./c++/RAII.md)
