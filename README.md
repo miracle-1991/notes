@@ -7,3 +7,5 @@
 * [RAII](./c++/RAII.md)
 * [PIMPL](./c++/impl.md)
 * [INITIALIZER_LIST](./c++/initializer_list.md)
+* [[[noreturn]]](./c++/noreturn.md)
+* [[[deprecated]]](./c++/deprecated.md)
