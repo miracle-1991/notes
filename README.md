@@ -5,3 +5,5 @@
 
 ## C++
 * [RAII](./c++/RAII.md)
+* [PIMPL](./c++/impl.md)
+* [INITIALIZER_LIST](./c++/initializer_list.md)
