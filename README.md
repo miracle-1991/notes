@@ -14,3 +14,4 @@
 * [override](./c++/override.md)
 * [=default](./c++/default.md)
 * [=delete](./c++/delete.md)
+* [auto](./c++/auto.md)
