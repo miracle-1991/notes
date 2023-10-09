@@ -9,3 +9,4 @@
 * [INITIALIZER_LIST](./c++/initializer_list.md)
 * [[[noreturn]]](./c++/noreturn.md)
 * [[[deprecated]]](./c++/deprecated.md)
+* [[[fallthrough]]](./c++/fallthrough.md)
