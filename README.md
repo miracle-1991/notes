@@ -10,3 +10,4 @@
 * [[[noreturn]]](./c++/noreturn.md)
 * [[[deprecated]]](./c++/deprecated.md)
 * [[[fallthrough]]](./c++/fallthrough.md)
+* [[[nodiscard]]](./c++/nodiscard.md)
