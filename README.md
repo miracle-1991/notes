@@ -11,3 +11,6 @@
 * [[[deprecated]]](./c++/deprecated.md)
 * [[[fallthrough]]](./c++/fallthrough.md)
 * [[[nodiscard]]](./c++/nodiscard.md)
+* [override](./c++/override.md)
+* [=default](./c++/default.md)
+* [=delete](./c++/delete.md)
