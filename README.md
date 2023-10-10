@@ -15,3 +15,4 @@
 * [=default](./c++/default.md)
 * [=delete](./c++/delete.md)
 * [auto](./c++/auto.md)
+* [map](./c++/map.md)
