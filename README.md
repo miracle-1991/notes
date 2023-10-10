@@ -16,3 +16,4 @@
 * [=delete](./c++/delete.md)
 * [auto](./c++/auto.md)
 * [map](./c++/map.md)
+* [for-each](./c++/for-each.md)
