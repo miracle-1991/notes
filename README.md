@@ -17,3 +17,5 @@
 * [auto](./c++/auto.md)
 * [map](./c++/map.md)
 * [for-each](./c++/for-each.md)
+* [Structured Binding Declaration](./c++/StructuredBinding.md)
+* [try_emplace](./c++/try_emplace.md)
