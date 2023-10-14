@@ -19,3 +19,5 @@
 * [for-each](./c++/for-each.md)
 * [Structured Binding Declaration](./c++/StructuredBinding.md)
 * [try_emplace](./c++/try_emplace.md)
+* [emplace_back](./c++/emplace_back.md)
+* [insert_or_assign](./c++/insert_or_assign.md)
